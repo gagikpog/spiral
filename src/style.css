@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+#canvas {
+    height: 100%;
+    width: 100%;
+}
+.menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    padding: 5px;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.row label {
+    margin-right: 10px;
+}
