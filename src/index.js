@@ -9,6 +9,7 @@ const primeCache = {};
 let allNumbers = false;
 
 print(count);
+initZoom();
 
 function printPoint(x, y) {
     ctx.strokeRect(x / zoom + canvas.width * 0.5, y / zoom + canvas.height * 0.5, 1 / zoom, 1 / zoom);
@@ -50,7 +51,7 @@ function print(n) {
             setTimeout(() => {
                 const step = 5000;
                 const delta = allNumbers ? 1 : 2;
-                for (let j = i; j < i + step; j += delta) {
+                for (let j = i; j < i + step && gen === print.gen; j += delta) {
                     if (allNumbers || isPrime(j)) {
                         const {x, y} = polarCoordinatesToDecart(j, j);
                         printPoint(x, y);
@@ -63,6 +64,12 @@ function print(n) {
     p(1);
 }
 
+function initZoom() {
+    new Zoom({zoomHandler: (change) => {
+        canvas.onmousewheel({deltaY: -change});
+    }});
+}
+
 // events
 window.onresize = () => {
     canvas.width = window.innerWidth;
@@ -71,8 +78,8 @@ window.onresize = () => {
 }
 
 canvas.onmousewheel = (event) => {
-    event.stopPropagation()
-    const delta = (event.deltaY || event.detail) > 0 ? 0.9 : 1.1;
+    event.stopPropagation && event.stopPropagation()
+    const delta = (event.deltaY || event.detail) < 0 ? 0.9 : 1.1;
     const newZoom = zoom * delta;
     if (newZoom > 1) {
         zoom = newZoom;
